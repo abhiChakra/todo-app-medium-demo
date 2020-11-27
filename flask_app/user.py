@@ -1,21 +1,23 @@
 from flask_login import UserMixin, current_user
 from storage import get_user
+from db_user import DBUser
 
 class User(UserMixin):
     """ Used to represent a single user.
        Public Attributes:
         id (str): unique id for identifying User. used in the parent class UserMixin, should be the same as username
-        username (str): login username
+        user_index (int): user index, used for SQL operations
         password (str): hashed key
     """
 
-    def __init__(self, username, password):
+    def __init__(self, username, index, password):
         """
         initialize a user with username and level from user manager
         :param username: str - the user name
         :param password: str - user password
         """
         self.id = username
+        self.user_index = index
         self.password = password
 
     def __repr__(self):
@@ -40,10 +42,13 @@ class UserManager:
         :param username: str - the username
         :return: User object/None
         """
-        current_user = get_user(username)
-        if current_user:
-            return User(current_user.username, current_user.password)
-        return None
+        try:
+            found_user = get_user(username)
+            if isinstance(found_user, DBUser):
+                return User(found_user.username, found_user.id, found_user.password)
+            return None
+        except:
+            return None
 
     def authenticate_user(self, username, password):
         """
