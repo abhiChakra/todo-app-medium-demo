@@ -1,4 +1,7 @@
 class DBUser:
+    """
+    Representing a user for ease of operations on DB
+    """
     id = None
     username = None
     password = None

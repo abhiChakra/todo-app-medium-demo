@@ -5,6 +5,12 @@ import Home from './Home';
 import NavBar from './NavBar';
 
 class App extends React.Component {
+  /**
+   * Central App Component. Used to return Components 
+   * based on user authenication, in our simple app, just
+   * between Login and Home pages
+   * @param {*} props 
+   */
   constructor(props){
     super(props);
     this.state = {
@@ -19,7 +25,11 @@ class App extends React.Component {
   }
 
   verifyAuthentication = () => {
+    /**
+     * Used to verify user authentication status from flask endpoint
+     */
     let fetchURL = process.env.REACT_APP_PORT+'/api/is_logged_in';
+    
     fetch(fetchURL, {
       method: 'GET',
       timeout: 8000,

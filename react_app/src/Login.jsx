@@ -1,6 +1,11 @@
 import React from 'react';
 
 class Login extends React.Component{
+    /**
+     * Login page, where user is redirected if not authenticated.
+     * Includes basic login functionality.
+     * @param {*} props 
+     */
     constructor(props){
         super(props);
         this.state = {
@@ -9,17 +14,29 @@ class Login extends React.Component{
     }
 
     handleUsernameChange = (event) => {
+        /**
+         * Handler for change in username input box
+         * @param {Event} event Text change in textbox triggering this function
+         */
         this.setState({username : event.target.value});
     }
 
     handlePasswordChange = (event) => {
+        /**
+         * Handler for change in password input box
+         * @param {Event} event Text change in textbox triggering this function
+         */
         this.setState({password : event.target.value});
     }
 
     handleLogin = (event) => {
-        event.preventDefault();
+        /**
+         * Handler for authenticating user credentials
+         * @param {Event} event Target button click triggering function
+         */
 
-        console.log("username: ", this.state.username, " | password: ", this.state.password);
+        // preventing default page reload
+        event.preventDefault();
 
         const credentials = {
             username : this.state.username,

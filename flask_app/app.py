@@ -101,7 +101,7 @@ def get_user_tasks():
         existing_tasks = request.get_json()['existing_tasks']
         tasks = get_tasks(current_user.user_index, existing_tasks)
         return jsonify(tasks), 200
-    except error:
+    except:
         return jsonify('Database error in fetching tasks'), 500
 
 @app.route('/api/add_task', methods=['POST'])

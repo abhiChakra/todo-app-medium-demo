@@ -1,11 +1,21 @@
 import React from 'react';
 
 class NavBar extends React.Component{
+    /**
+     * Simple navigational bar across app. When authenticated,
+     * provides logout feature
+     * @param {*} props 
+     */
     constructor(props){
         super(props);
     }
 
     handleLogout = (event) => {
+        /**
+         * Handler for logging out user
+         * @param {Event} event Target button click triggering function
+         */
+
         event.preventDefault();
 
         let fetchURL = process.env.REACT_APP_PORT+'/api/logout';
@@ -21,6 +31,7 @@ class NavBar extends React.Component{
             }
         }).catch(error => {
             alert('Server error');
+            console.log(error);
         })
     }
 
