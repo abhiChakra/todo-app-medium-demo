@@ -1,0 +1,5 @@
+node_modules/
+build/
+package-lock.json
+README.md
+todo_app_nginx_server.conf
