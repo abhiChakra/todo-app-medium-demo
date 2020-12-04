@@ -18,9 +18,6 @@ COPY public ./public
 # copying over our nginx config file
 COPY todo_app_container_nginx_server.conf ./
 
-# copying over our .env file
-COPY .env ./
-
 # creating production build to serve through nginx
 RUN env &&\
     npm run build
