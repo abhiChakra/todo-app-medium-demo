@@ -15,6 +15,4 @@ COPY ./user.py ./
 
 COPY ./database.ini ./
 
-EXPOSE 8080
-
-CMD [ "python", "run.py" ]
+ENTRYPOINT /to_do_flask_app/run.py python run.py --host=0.0.0.0 --port=8080
