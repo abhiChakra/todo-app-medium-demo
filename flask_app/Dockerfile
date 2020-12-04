@@ -15,4 +15,4 @@ COPY ./user.py ./
 
 COPY ./database.ini ./
 
-ENTRYPOINT /to_do_flask_app/run.py python run.py --host=0.0.0.0 --port=8080
+ENTRYPOINT FLASK_APP=/to_do_flask_app/run.py python run.py --host=0.0.0.0 --port=8080
