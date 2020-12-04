@@ -38,13 +38,11 @@ class App extends React.Component {
     }).then(response => {
       response.json().then(authenticated => {
         if(authenticated){
-          console.log("Login successful");
           this.setState({
             isAuthenticated: true,
             authenticating: false
         });
         } else{
-          console.log("Login UNsuccessful");
           this.setState({
             isAuthenticated: false,
             authenticating: false
