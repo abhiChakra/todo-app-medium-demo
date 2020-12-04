@@ -26,7 +26,7 @@ RUN env &&\
     npm run build
 
 # starting second, nginx build-stage
-FROM nginx:1.19
+FROM nginxinc/nginx-unprivileged:1.16.1-alpine
 
 # copying our nginx config
 COPY --from=build-stage /react-app/todo_app_container_nginx_server.conf /etc/nginx/conf.d/default.conf
