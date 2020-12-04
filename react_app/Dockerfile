@@ -12,8 +12,7 @@ RUN npm install
 COPY ./ /react-app/
 
 # creating production build to serve through nginx
-RUN env &&\
-    npm run build
+RUN npm run build
 
 # starting second, nginx build-stage
 FROM nginx:1.19
