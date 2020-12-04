@@ -15,6 +15,6 @@ COPY ./user.py ./
 
 COPY ./database.ini ./
 
-EXPOSE 5000
+EXPOSE 8080
 
 CMD [ "python", "run.py" ]
