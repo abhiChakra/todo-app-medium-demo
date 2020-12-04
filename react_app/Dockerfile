@@ -9,10 +9,21 @@ COPY ./package.json /react-app/
 # installing npm packages
 RUN npm install
 
-COPY ./ /react-app/
+# copying over react source material
+COPY src ./src
+
+# copying over further react material
+COPY public ./public
+
+# copying over our nginx config file
+COPY todo_app_container_nginx_server.conf ./
+
+# copying over our .env file
+COPY .env ./
 
 # creating production build to serve through nginx
-RUN npm run build
+RUN env &&\
+    npm run build
 
 # starting second, nginx build-stage
 FROM nginx:1.19
