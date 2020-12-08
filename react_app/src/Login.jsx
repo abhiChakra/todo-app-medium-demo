@@ -82,7 +82,7 @@ class Login extends React.Component{
 
 function UsernameInput(props) {
     return (
-        <input type="username" placeholder="Username"
+        <input id="usernameInput" type="username" placeholder="Username"
                onChange={props.handleUsernameChange}>
         </input>
     );
@@ -91,7 +91,7 @@ function UsernameInput(props) {
 
 function PasswordInput(props) {
     return (
-        <input type="password" placeholder="Password"
+        <input id="passwordInput" type="password" placeholder="Password"
                onChange={props.handlePasswordChange}>
         </input>
     );
@@ -100,7 +100,7 @@ function PasswordInput(props) {
 
 function LoginButton(props) {
     return (
-        <button onClick={props.handleLogin}>
+        <button id="authenticateButton" onClick={props.handleLogin}>
             Log In
         </button>
     );
