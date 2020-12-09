@@ -38,7 +38,7 @@ class NavBar extends React.Component{
     render(){
         if(this.props.authenticated){
             return(
-                <LogoutButton handleLogout={(event) => this.handleLogout(event)}/>
+                <LogoutButton id="logoutButton" handleLogout={(event) => this.handleLogout(event)}/>
             )
         } else{
             return(

@@ -202,7 +202,7 @@ function AddTask(props){
     return(
         <div>
             <input type='text' id='taskInfo' placeholder='Get groceries...' onChange={props.handleNewTaskInput}></input>
-            <button onClick={props.handleAddTask}>Add Task</button>
+            <button id="addTaskButton" onClick={props.handleAddTask}>Add Task</button>
         </div>
     )
 }
@@ -214,7 +214,7 @@ function TaskListings(props){
     if(props.displayTasks.length > 0){
         return props.displayTasks.map(([task_id, task]) => {
             return(
-                <div key={task_id.toString()}>
+                <div id="taskListing" key={task_id.toString()}>
                     <hr />
                     <div>{task}</div><button onClick={props.handleTaskDelete(task_id)}>Delete</button>                
                     <hr />
@@ -223,7 +223,7 @@ function TaskListings(props){
         });
     } else{
         return(
-            <div></div>
+            <div id="emptyTaskListing"></div>
         )
     }
         
