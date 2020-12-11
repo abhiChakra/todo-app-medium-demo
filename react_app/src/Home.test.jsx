@@ -54,8 +54,11 @@ describe("Testing adding/deleting task functionalities", () => {
     });
 
     afterEach(() => {
+        // clears mock statuses of fetch and alert at end of each test
         fetch.mockClear();
         window.alert.mockClear();
+
+        // unmounts test Component to mimic mount unmount cycle
         wrapper.unmount();
     });
 
