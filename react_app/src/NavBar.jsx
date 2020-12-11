@@ -10,7 +10,7 @@ class NavBar extends React.Component{
         super(props);
     }
 
-    handleLogout = (event) => {
+    handleLogout = async (event) => {
         /**
          * Handler for logging out user
          * @param {Event} event Target button click triggering function
@@ -19,26 +19,29 @@ class NavBar extends React.Component{
         event.preventDefault();
 
         let fetchURL = process.env.REACT_APP_PORT+'/api/logout';
-        fetch(fetchURL, {
-            method: 'POST',
-            mode: 'cors',
-            credentials: 'include'
-        }).then(response => {
+
+        try{
+            let response = await fetch(fetchURL, {
+                method: 'POST',
+                mode: 'cors',
+                credentials: 'include'
+            });
+
             if(response.status === 200){
-                this.props.updateAuthentication();
+                await this.props.updateAuthentication();
             } else{
                 alert("Server error");
             }
-        }).catch(error => {
+        } catch(err){
             alert('Server error');
-            console.log(error);
-        })
+            console.log(err);
+        }
     }
 
     render(){
         if(this.props.authenticated){
             return(
-                <LogoutButton handleLogout={(event) => this.handleLogout(event)}/>
+                <LogoutButton id="logoutButton" handleLogout={(event) => this.handleLogout(event)}/>
             )
         } else{
             return(

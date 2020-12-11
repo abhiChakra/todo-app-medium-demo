@@ -20,40 +20,39 @@ class App extends React.Component {
     };
   }
 
-  componentDidMount(){
-    this.verifyAuthentication();
+  async componentDidMount(){
+    await this.verifyAuthentication();
   }
 
-  verifyAuthentication = () => {
+  verifyAuthentication = async () => {
     /**
      * Used to verify user authentication status from flask endpoint
      */
     let fetchURL = process.env.REACT_APP_PORT+'/api/is_logged_in';
-    
-    fetch(fetchURL, {
-      method: 'GET',
-      timeout: 8000,
-      credentials: 'include',
-      mode: 'cors'
-    }).then(response => {
-      response.json().then(authenticated => {
+
+    try{
+        let authenticatedFetch = await fetch(fetchURL, {
+            method: 'GET',
+            timeout: 8000,
+            credentials: 'include',
+            mode: 'cors'
+          })
+
+        let authenticated = await authenticatedFetch.json();
         if(authenticated){
-          console.log("Login successful");
-          this.setState({
-            isAuthenticated: true,
-            authenticating: false
-        });
-        } else{
-          console.log("Login UNsuccessful");
-          this.setState({
-            isAuthenticated: false,
-            authenticating: false
-        });  
+            this.setState({
+              isAuthenticated: true,
+              authenticating: false
+            });
+        } else {
+            this.setState({
+              isAuthenticated: false,
+              authenticating: false
+            });  
         }
-      })
-    }).catch(err => {
-      alert("Error connecting to flask server: ", err);
-    })
+      } catch(err) {
+        alert("Error connecting to flask server: ", err);
+    }
   }
 
   render(){
@@ -64,19 +63,19 @@ class App extends React.Component {
     }
 
     return(
-      <div id="Nginx-App">
+      <div id="Todo-App">
         <NavBar authenticated={this.state.isAuthenticated} updateAuthentication={() => this.verifyAuthentication()}/>
-        <BrowserRouter>
+        <BrowserRouter key="todo-router">
           {
             (this.state.isAuthenticated) ? (
-              [<Switch>,
-                <Redirect exact from='/login' to='home'/>,
-                <Redirect exact from='/' to='home'/>,
-                <Route exact path='/home' component={Home}/>
+              [<Switch key='todo-switch'>,
+                <Redirect key='login-to-home' exact from='/login' to='home'/>,
+                <Redirect key='to-home' exact from='/' to='home'/>,
+                <Route key='home-route' exact path='/home' component={Home}/>
               </Switch>
               ]) : ([
-                <Redirect to='login'/>,
-                <Route path='/login' render={(props) => <Login {...props}
+                <Redirect key='to-login' to='login'/>,
+                <Route key='login-route' path='/login' render={(props) => <Login {...props}
                         updateAuthentication={() => this.verifyAuthentication()}/>}/>]
             )
           }
