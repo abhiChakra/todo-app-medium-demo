@@ -11,32 +11,37 @@ class Home extends React.Component{
         this.state = {info : "", tasks : {}, newTask: ""};
     }
 
-    componentDidMount(){
+    async componentDidMount(){
         /** Fetching basic user info and then proceeding to
         *   fetch user's tasks. 
         */
 
         let fetchURL = process.env.REACT_APP_PORT+'/api/home';
-        fetch(fetchURL, {
-            method: 'GET',
-            mode: 'cors',
-            headers: {
-                'Accept-Type': 'application/json'
-            },
-            credentials: 'include'
-        }).then(response => {
+
+        try{
+            let response = await fetch(fetchURL, {
+                method: 'GET',
+                mode: 'cors',
+                headers: {
+                    'Accept-Type': 'application/json'
+                },
+                credentials: 'include'
+            });
+
             if(response.status === 200){
-                response.json().then(usrMsg => {
-                    this.fetchTasks(true, usrMsg);
-                })
+                let usrMsg = await response.json();
+                this.setState({info : "Updating tasks..."}, () => {
+                    return this.fetchTasks(true, usrMsg)
+                });
+            } else{
+                this.setState({info : 'Error fetching from server.'});
             }
-        }).catch(error => {
+        } catch(err){
             this.setState({info : 'Error fetching from server.'});
-            console.log(error);
-        })
+        }
     }
 
-    fetchTasks = (empty = true, message = "") => {
+    fetchTasks = async (empty = true, message = "") => {
         /**
         * Standard function used to fetch a user's tasks.
         * 
@@ -52,23 +57,25 @@ class Home extends React.Component{
             existing_tasks = this.state.tasks;
         }
 
-        this.setState({info : "Updating tasks..."});
-
-        fetch(fetchURL, {
-            method: 'POST',
-            mode: 'cors',
-            credentials: 'include',
-            body: JSON.stringify({"existing_tasks" : existing_tasks}),
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept-Type': 'application/json'
-            }
-        }).then(response => {
-            if(response.status === 200){
-                response.json().then(new_tasks => {
+        try{
+            const tasks_response = await fetch(fetchURL, {
+                method: 'POST',
+                mode: 'cors',
+                credentials: 'include',
+                body: JSON.stringify({"existing_tasks" : existing_tasks}),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept-Type': 'application/json'
+                }
+            });
+            
+            if(tasks_response){
+                if(tasks_response.status === 200){
                     // received new_tasks object in the form {task_id : task_info}
+                    let new_tasks = await tasks_response.json();
+    
                     let updated_tasks = null;
-
+    
                     if(empty){
                         // if true, must fetch all tasks
                         updated_tasks = {};
@@ -76,23 +83,22 @@ class Home extends React.Component{
                         // if false, must only add on newer fetched tasks to existing state
                         updated_tasks = this.state.tasks;
                     }
-            
+                    
                     Object.entries(new_tasks).map(([task_id, task]) => {updated_tasks[task_id] = task});
-
+    
                     this.setState({tasks : updated_tasks, info: message});
-                })
-            } else{
-                this.setState({info : 'Error fetching from server.'});
+                } else{
+                    this.setState({info : 'Error fetching tasks from server.'});
+                }
             }
-        }).catch(error => {
+        } catch(err){
             this.setState({info : 'Error fetching from server.'});
-
             // kept for development only
-            console.log(error);
-        })
+            console.log(err);
+        }
     }
 
-    handleAddTask = (event) => {
+    handleAddTask = async (event) => {
         /**
          * Handler for adding new user task into DB
          * @param {Event} event Target button click triggering function
@@ -108,34 +114,35 @@ class Home extends React.Component{
             this.setState({info : "Adding task..."});
             let fetchURL = process.env.REACT_APP_PORT+"/api/add_task";
 
-            fetch(fetchURL, {
-                method: 'POST',
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept-Type': 'application/json'
-                },
-                body: JSON.stringify({'task' : this.state.newTask}),
-                credentials: 'include'
-            }).then(response => {
-                if(response.status === 200){
-                    response.json().then(successMsg => {
-                        if(successMsg === true){
-                            // successful DB insertion of task
-                            // re-fetching only newly added task for display
-                            this.fetchTasks(false, "Added task successfully");
-                        }
-                    })
+            try{
+                let add_response = await fetch(fetchURL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept-Type': 'application/json'
+                    },
+                    body: JSON.stringify({'task' : this.state.newTask}),
+                    credentials: 'include'
+                });
+
+                if(add_response.status === 200){
+                    let succesStatus = await add_response.json();
+
+                    if(succesStatus){
+                        // successful DB insertion of task
+                        // re-fetching only newly added task for display
+                        return await this.fetchTasks(false, "Added task successfully");
+                    } else{
+                        this.setState({info : "Server error in adding new task"});
+                    }
                 } else{
-                    response.json().then(errorMsg => {
-                        this.setState({info : errorMsg});
-                    })
+                    this.setState({info : "Server error in adding new task"});
                 }
-            }).catch(error => {
-                error.json().then(errorMsg => {
-                    this.setState({info : errorMsg});
-                })
-            })
+            } catch(err){
+                this.setState({info : "Server error in adding new task"});
+                console.log(err);
+            }
         }
     }
 
@@ -151,7 +158,7 @@ class Home extends React.Component{
         }
     }
 
-    handleTaskDelete = (task_id) => {
+    handleTaskDelete = async (task_id) => {
         /**
          * Handler for deleting existing user task from DB
          * @param {int} task_id ID of task to be deleted required for endpoint
@@ -160,32 +167,34 @@ class Home extends React.Component{
 
         let fetchURL = process.env.REACT_APP_PORT+'/api/remove_task';
 
-        fetch(fetchURL, {
-            method: 'DELETE',
-            mode: 'cors',
-            credentials: 'include',
-            body: JSON.stringify({'task_id':task_id}),
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept-Type': 'application/json'
-            }
-        }).then(response => {
+        try{
+            let response = await fetch(fetchURL, {
+                method: 'DELETE',
+                mode: 'cors',
+                credentials: 'include',
+                body: JSON.stringify({'task_id':task_id}),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept-Type': 'application/json'
+                }
+            });
+    
             if(response.status === 200){
                 // must fetch all remaining tasks to update display
-                this.fetchTasks(true, "Task deleted successfully");
+                await this.fetchTasks(true, "Task deleted successfully");
             } else{
                 this.setState({info : "Error deleting task"});
             }
-        }).catch(error => {
-            this.setState({info : error});
-        })
+        } catch(err){
+            this.setState({info : err});
+        }
     }
 
     render(){
         return(
             <div>
                 <br />
-                <div>{this.state.info}</div>
+                <div id="usrInfo">{this.state.info}</div>
                 <hr/>
                 <AddTask handleNewTaskInput={(event) => {this.handleNewTaskInput(event)}} handleAddTask={(event) => {this.handleAddTask(event)}}/>
                 <hr />
@@ -214,9 +223,9 @@ function TaskListings(props){
     if(props.displayTasks.length > 0){
         return props.displayTasks.map(([task_id, task]) => {
             return(
-                <div id="taskListing" key={task_id.toString()}>
+                <div id="taskListing" task_id={task_id} key={task_id.toString()}>
                     <hr />
-                    <div>{task}</div><button onClick={props.handleTaskDelete(task_id)}>Delete</button>                
+                    <div id="taskListingDiv">{task}</div><button id="taskListingDelete" onClick={props.handleTaskDelete(task_id)}>Delete</button>                
                     <hr />
                 </div>
             )   

@@ -29,7 +29,7 @@ class Login extends React.Component{
         this.setState({password : event.target.value});
     }
 
-    handleLogin = (event) => {
+    handleLogin = async (event) => {
         /**
          * Handler for authenticating user credentials
          * @param {Event} event Target button click triggering function
@@ -44,25 +44,28 @@ class Login extends React.Component{
         }
 
         let fetchURL = process.env.REACT_APP_PORT+'/api/login';
-        fetch(fetchURL, {
-            method: 'POST',
-            credentials: 'include',
-            body: JSON.stringify(credentials),
-            mode: 'cors',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(response => {
-            if(response.status == 200){
-                this.props.updateAuthentication();
+
+        try{
+            let response = await fetch(fetchURL, {
+                method: 'POST',
+                credentials: 'include',
+                body: JSON.stringify(credentials),
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if(response.status === 200){
                 this.setState({usrMessage : 'Authenticated. Redirecting to home.'});
+                await this.props.updateAuthentication();
             } else{
                 this.setState({usrMessage : 'Incorrect credentials'});
             }
-        }).catch(err => {
+        } catch(err){
             this.setState({usrMessage : 'Server error'});
             console.log(err);
-        })
+        }
     }
 
     render() {

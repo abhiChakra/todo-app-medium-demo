@@ -21,7 +21,7 @@ class App extends React.Component {
   }
 
   async componentDidMount(){
-    return this.verifyAuthentication();
+    await this.verifyAuthentication();
   }
 
   verifyAuthentication = async () => {
@@ -29,29 +29,30 @@ class App extends React.Component {
      * Used to verify user authentication status from flask endpoint
      */
     let fetchURL = process.env.REACT_APP_PORT+'/api/is_logged_in';
-    
-    fetch(fetchURL, {
-      method: 'GET',
-      timeout: 8000,
-      credentials: 'include',
-      mode: 'cors'
-    }).then(response => {
-      response.json().then(authenticated => {
+
+    try{
+        let authenticatedFetch = await fetch(fetchURL, {
+            method: 'GET',
+            timeout: 8000,
+            credentials: 'include',
+            mode: 'cors'
+          })
+
+        let authenticated = await authenticatedFetch.json();
         if(authenticated){
-          this.setState({
-            isAuthenticated: true,
-            authenticating: false
-        });
-        } else{
-          this.setState({
-            isAuthenticated: false,
-            authenticating: false
-        });  
+            this.setState({
+              isAuthenticated: true,
+              authenticating: false
+            });
+        } else {
+            this.setState({
+              isAuthenticated: false,
+              authenticating: false
+            });  
         }
-      })
-    }).catch(err => {
-      alert("Error connecting to flask server: ", err);
-    })
+      } catch(err) {
+        alert("Error connecting to flask server: ", err);
+    }
   }
 
   render(){
