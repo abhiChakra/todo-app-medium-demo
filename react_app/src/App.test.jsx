@@ -3,14 +3,14 @@ import App from './App.jsx';
 import Login from './Login.jsx';
 import Home from './Home.jsx';
 import NavBar from './NavBar.jsx';
-import { BrowserRouter } from 'react-router-dom';
 
-import { shallow, mount } from "enzyme";
+import { mount } from "enzyme";
 
 describe("testing rendering of App components under different authentication circumstances", () => {
 
     beforeAll(() => {
         global.fetch = jest.fn();
+        window.alert = jest.fn(() => {});
     });
 
     let wrapper;
@@ -20,6 +20,7 @@ describe("testing rendering of App components under different authentication cir
 
     afterEach(() => {
         fetch.mockClear();
+        window.alert.mockClear();
         wrapper.unmount();
     });
 
@@ -36,7 +37,6 @@ describe("testing rendering of App components under different authentication cir
 
         // calling componentDidMount function
         await wrapper.instance().componentDidMount();
-
         wrapper.update();
 
         // test for checking whether verifyAuthentication called within componentDidMount.

@@ -17,6 +17,7 @@ describe("Testing authentication state updates", () => {
 
     beforeAll(() => {
         global.fetch = jest.fn();
+        window.alert = jest.fn(() => {});
     });
 
     let wrapper;
@@ -29,6 +30,7 @@ describe("Testing authentication state updates", () => {
 
     afterEach(() => {
         fetch.mockClear();
+        window.alert.mockClear();
         wrapper.unmount();
     });
 
