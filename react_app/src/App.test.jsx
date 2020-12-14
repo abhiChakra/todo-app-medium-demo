@@ -72,7 +72,7 @@ describe("testing rendering/redirecting of App components when NOT authenticated
         expect(wrapper.find("#authenticateButton")).toHaveLength(1);
     });
 
-    test("Correctly updating HTML based on login authentication", async () => {
+    test("Correctly updating HTML based on valid login", async () => {
 
         //const loginSpyComponentMount = jest.spyOn(wrapper.instance(), "handleLogin");
 
@@ -106,7 +106,7 @@ describe("testing rendering/redirecting of App components when NOT authenticated
         expect(wrapper.contains(incorrectDiv)).toBe(false);
     });
 
-    test("Correctly updating HTML based on login authentication", async () => {
+    test("Correctly updating HTML based on invalid login", async () => {
 
         //const loginSpyComponentMount = jest.spyOn(wrapper.instance(), "handleLogin");
 
