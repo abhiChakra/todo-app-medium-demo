@@ -5,6 +5,14 @@ WORKDIR /to_do_flask_app
 
 COPY ./requirements.txt ./
 
+ARG USERNAME
+
+ENV USERNAME $USERNAME
+
+ARG PASSWORD
+
+ENV PASSWORD $PASSWORD
+
 ARG HOST
 
 ENV HOST $HOST
@@ -31,4 +39,4 @@ COPY ./user.py ./
 
 EXPOSE 5000
 
-CMD [ "python", "run.py" ]
+CMD ["pytest"]
