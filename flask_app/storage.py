@@ -31,11 +31,18 @@ def connection_uri():
     config = read_config()
 
     URI = 'postgresql+psycopg2://{}:{}@/{}?host={}'.format(
-        config[PARSER_CONNECTION]['user'],
-        config[PARSER_CONNECTION]['password'],
-        config[PARSER_CONNECTION]['dbname'],
-        config[PARSER_CONNECTION]['host']
+        os.environ['USER'],
+        os.environ['PASS'],
+        os.environ['DBNAME'],
+        os.environ['HOST']
     )
+
+    # URI = 'postgresql+psycopg2://{}:{}@/{}?host={}'.format(
+    #     config[PARSER_CONNECTION]['user'],
+    #     config[PARSER_CONNECTION]['password'],
+    #     config[PARSER_CONNECTION]['dbname'],
+    #     config[PARSER_CONNECTION]['host']
+    # )
 
     return URI
 
@@ -253,23 +260,23 @@ def get_user(username):
         my_connection.close()
         engine.dispose()
 
-# if __name__ == "__main__":
-#     create_users_table()
+if __name__ == "__main__":
+    create_users_table()
 
-#     parser = read_config()
-#     users_dict = literal_eval(parser['users']['USER_CREDS'])
+    parser = read_config()
+    users_dict = literal_eval(parser['users']['USER_CREDS'])
 
-#     #Users:
-#     users = []
-#     for user in users_dict.keys():
-#         new_user = DBUser(None, user, users_dict[user]['password'])
-#         users.append(new_user)
-#     insert_users(users)
+    #Users:
+    users = []
+    for user in users_dict.keys():
+        new_user = DBUser(None, user, users_dict[user]['password'])
+        users.append(new_user)
+    insert_users(users)
 
-#     create_tasks_table()
-#     insert_task(1, "get groceries")
-#     insert_task(2, "do laundry")
-#     insert_task(1, "call dentist")
-#     insert_task(2, "order monitor")
-#     insert_task(1, "call Stacy")
-#     delete_task(1, 1)
+    create_tasks_table()
+    insert_task(1, "get groceries")
+    insert_task(2, "do laundry")
+    insert_task(1, "call dentist")
+    insert_task(2, "order monitor")
+    insert_task(1, "call Stacy")
+    delete_task(1, 1)

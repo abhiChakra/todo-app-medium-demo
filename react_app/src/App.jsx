@@ -28,10 +28,10 @@ class App extends React.Component {
     /**
      * Used to verify user authentication status from flask endpoint
      */
-    let fetchURL = process.env.REACT_APP_PORT+'/api/is_logged_in';
+    // let fetchURL = process.env.REACT_APP_PORT+'/api/is_logged_in';
 
     try{
-        let authenticatedFetch = await fetch(fetchURL, {
+        let authenticatedFetch = await fetch('api/is_logged_in', {
             method: 'GET',
             timeout: 8000,
             credentials: 'include',

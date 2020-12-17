@@ -43,10 +43,10 @@ class Login extends React.Component{
             password : this.state.password
         }
 
-        let fetchURL = process.env.REACT_APP_PORT+'/api/login';
+        // let fetchURL = process.env.REACT_APP_PORT+'/api/login';
 
         try{
-            let response = await fetch(fetchURL, {
+            let response = await fetch('/api/login', {
                 method: 'POST',
                 credentials: 'include',
                 body: JSON.stringify(credentials),
