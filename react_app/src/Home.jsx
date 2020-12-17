@@ -16,8 +16,6 @@ class Home extends React.Component{
         *   fetch user's tasks. 
         */
 
-        // let fetchURL = process.env.REACT_APP_PORT+'/api/home';
-
         try{
             let response = await fetch('/api/home', {
                 method: 'GET',
@@ -48,7 +46,6 @@ class Home extends React.Component{
         * @param {boolean} empty Useful for fetching only newly added task items
         * @param {string} message Info to be displayed upon fetch completion
         */
-        // let fetchURL = process.env.REACT_APP_PORT+'/api/tasks';
 
         let existing_tasks = {};
 
@@ -112,7 +109,6 @@ class Home extends React.Component{
             this.setState({info : "Must enter valid task"});
         } else{
             this.setState({info : "Adding task..."});
-            // let fetchURL = process.env.REACT_APP_PORT+"/api/add_task";
 
             try{
                 let add_response = await fetch('/api/add_task', {
@@ -164,8 +160,6 @@ class Home extends React.Component{
          * @param {int} task_id ID of task to be deleted required for endpoint
          */
         this.setState({info : "Deleting task..."});
-
-        // let fetchURL = process.env.REACT_APP_PORT+'/api/remove_task';
 
         try{
             let response = await fetch('/api/remove_task', {
