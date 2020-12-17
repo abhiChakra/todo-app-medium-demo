@@ -18,10 +18,8 @@ class NavBar extends React.Component{
 
         event.preventDefault();
 
-        let fetchURL = process.env.REACT_APP_PORT+'/api/logout';
-
         try{
-            let response = await fetch(fetchURL, {
+            let response = await fetch('/api/logout', {
                 method: 'POST',
                 mode: 'cors',
                 credentials: 'include'

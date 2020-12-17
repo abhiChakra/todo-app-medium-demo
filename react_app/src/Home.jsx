@@ -16,10 +16,8 @@ class Home extends React.Component{
         *   fetch user's tasks. 
         */
 
-        let fetchURL = process.env.REACT_APP_PORT+'/api/home';
-
         try{
-            let response = await fetch(fetchURL, {
+            let response = await fetch('/api/home', {
                 method: 'GET',
                 mode: 'cors',
                 headers: {
@@ -48,7 +46,6 @@ class Home extends React.Component{
         * @param {boolean} empty Useful for fetching only newly added task items
         * @param {string} message Info to be displayed upon fetch completion
         */
-        let fetchURL = process.env.REACT_APP_PORT+'/api/tasks';
 
         let existing_tasks = {};
 
@@ -58,7 +55,7 @@ class Home extends React.Component{
         }
 
         try{
-            const tasks_response = await fetch(fetchURL, {
+            const tasks_response = await fetch('/api/tasks', {
                 method: 'POST',
                 mode: 'cors',
                 credentials: 'include',
@@ -112,10 +109,9 @@ class Home extends React.Component{
             this.setState({info : "Must enter valid task"});
         } else{
             this.setState({info : "Adding task..."});
-            let fetchURL = process.env.REACT_APP_PORT+"/api/add_task";
 
             try{
-                let add_response = await fetch(fetchURL, {
+                let add_response = await fetch('/api/add_task', {
                     method: 'POST',
                     mode: 'cors',
                     headers: {
@@ -165,10 +161,8 @@ class Home extends React.Component{
          */
         this.setState({info : "Deleting task..."});
 
-        let fetchURL = process.env.REACT_APP_PORT+'/api/remove_task';
-
         try{
-            let response = await fetch(fetchURL, {
+            let response = await fetch('/api/remove_task', {
                 method: 'DELETE',
                 mode: 'cors',
                 credentials: 'include',
