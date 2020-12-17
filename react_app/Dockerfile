@@ -13,10 +13,6 @@ ARG REACT_APP_NGINXPROXY
 
 ENV REACT_APP_NGINXPROXY $REACT_APP_NGINXPROXY
 
-ARG REACT_APP_PORT
-
-ENV REACT_APP_PORT $REACT_APP_PORT
-
 COPY ./ /react-app/
 
 # creating production build to serve through nginx
