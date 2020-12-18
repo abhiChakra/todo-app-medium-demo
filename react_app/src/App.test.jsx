@@ -199,7 +199,7 @@ describe("testing rendering/redirecting of App components when authenticated", (
 
         // just verifying elements within Home Component
         expect(wrapper.find("#addTaskButton")).toHaveLength(1);
-        expect(wrapper.find("taskListing")).toHaveLength(0);
+        expect(wrapper.find("taskListing")).toHaveLength(1);
         expect(wrapper.find("#emptyTaskListing")).toHaveLength(1);
     });
 });
