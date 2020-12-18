@@ -5,6 +5,8 @@ WORKDIR /to_do_flask_app
 
 COPY ./requirements.txt ./
 
+# collecting required access creds
+
 ARG USERNAME
 
 ENV USERNAME $USERNAME
@@ -37,7 +39,5 @@ COPY ./storage.py ./
 COPY ./db_user.py ./
 COPY ./user.py ./
 COPY tests ./tests
-
-EXPOSE 5000
 
 CMD ["pytest"]

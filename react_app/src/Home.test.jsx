@@ -77,8 +77,8 @@ describe("Testing adding/deleting task functionalities", () => {
         expect(wrapper.state('newTask')).toEqual("Clean fishbowl");
 
         // establishing two fetchMock calls below to address nested fetch calls in handleAddTask function code
-        fetchMock.mock("http://127.0.0.1:8080/api/add_task", true);
-        fetchMock.mock("http://127.0.0.1:8080/api/tasks", {3 : "Clean fishbowl"});
+        fetchMock.mock("api/add_task", true);
+        fetchMock.mock("api/tasks", {3 : "Clean fishbowl"});
 
         /**
          * Ideally would be able to simulate addTask action, however kept running into 
@@ -119,8 +119,8 @@ describe("Testing adding/deleting task functionalities", () => {
         let deleteTaskID;
 
         // establishing two fetchMock calls below to address nested fetch calls in handleAddTask function code
-        fetchMock.mock("http://127.0.0.1:8080/api/remove_task", 200);
-        fetchMock.mock("http://127.0.0.1:8080/api/tasks", {2 : "Mow lawn"});
+        fetchMock.mock("api/remove_task", 200);
+        fetchMock.mock("api/tasks", {2 : "Mow lawn"});
 
         // finding all taskListings and intending to delete first one
         let taskListingToDelete = wrapper.find("#taskListing").at(0);

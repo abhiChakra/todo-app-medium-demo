@@ -5,6 +5,8 @@ WORKDIR /to_do_flask_app
 
 COPY ./requirements.txt ./
 
+# collecting required access creds from env
+
 ARG HOST
 
 ENV HOST $HOST
