@@ -1,0 +1,12 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/cibc-esg-company-maps/flask_test:latest_flask_test', '-f', './flask_app/Dockerfile.dev', './flask_app']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/cibc-esg-company-maps/flask_test:latest_flask_test']
+- name: 'gcr.io/cloud-builders/docker'
+  entrypoint: 'bash'
+  args: ['-c', 'docker run -e USERNAME=${_MY_SECRET_USERNAME} -e PASSWORD=${_MY_SECRET_PASSWORD} -e HOST=${_HOST} -e DBNAME=${_DBNAME} -e USER=${_USER} -e PASS=${_PASS} gcr.io/cibc-esg-company-maps/flask_test:latest_flask_test']
+- name: 'gcr.io/cloud-builders/npm'
+  args: ['--prefix', './react_app', 'install']
+- name: 'gcr.io/cloud-builders/npm'
+  args: ['--prefix', './react_app', 'test', 'a', '--', '--coverage']

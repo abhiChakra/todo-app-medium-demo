@@ -76,6 +76,8 @@ describe("Testing authentication state updates", () => {
         // clicking Log in button
         await wrapper.find("#authenticateButton").simulate('click');
 
+        wrapper.update();
+
         expect(spyComponentMount).toHaveBeenCalled();
 
         // ensuring usrMessage state updates as expected
@@ -93,6 +95,9 @@ describe("Testing authentication state updates", () => {
         });
 
         await wrapper.find("#authenticateButton").simulate('click');
+
+        wrapper.update();
+        
         expect(spyComponentMount).toHaveBeenCalled();
 
         // ensuring usrMessage state updates as expected

@@ -9,6 +9,8 @@ COPY ./package.json /react-app/
 # installing npm packages
 RUN npm install
 
+# collecting proxy env var
+
 ARG REACT_APP_NGINXPROXY
 
 ENV REACT_APP_NGINXPROXY $REACT_APP_NGINXPROXY
