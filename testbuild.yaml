@@ -9,4 +9,4 @@ steps:
 - name: 'gcr.io/cloud-builders/npm'
   args: ['--prefix', './react_app', 'install']
 - name: 'gcr.io/cloud-builders/npm'
-  args: ['--prefix', './react_app', 'test', 'a', '--', '--coverage']
+  args: ['CI=true', '--prefix', './react_app', 'test', 'a', '--', '--coverage']
