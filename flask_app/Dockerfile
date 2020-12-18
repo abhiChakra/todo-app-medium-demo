@@ -5,24 +5,6 @@ WORKDIR /to_do_flask_app
 
 COPY ./requirements.txt ./
 
-# collecting required access creds from env
-
-ARG HOST
-
-ENV HOST $HOST
-
-ARG DBNAME
-
-ENV DBNAME $DBNAME
-
-ARG USER
-
-ENV USER $USER
-
-ARG PASS
-
-ENV PASS $PASS
-
 RUN env && pip install --no-cache-dir -r requirements.txt
 
 COPY ./app.py ./
