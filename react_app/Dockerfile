@@ -9,14 +9,13 @@ COPY ./package.json /react-app/
 # installing npm packages
 RUN npm install
 
-# copying over react source material
-COPY src ./src
+# collecting proxy env var
 
-# copying over further react material
-COPY public ./public
+ARG REACT_APP_NGINXPROXY
 
-# copying over our nginx config file
-COPY todo_app_container_nginx_server.conf ./
+ENV REACT_APP_NGINXPROXY $REACT_APP_NGINXPROXY
+
+COPY ./ /react-app/
 
 # creating production build to serve through nginx
 RUN env &&\
@@ -26,12 +25,20 @@ RUN env &&\
 FROM nginxinc/nginx-unprivileged:1.16.1-alpine
 
 # copying our nginx config
-COPY --from=build-stage /react-app/todo_app_container_nginx_server.conf /etc/nginx/conf.d/default.conf
+COPY --from=build-stage /react-app/todo_app_container_nginx_server.conf.template /etc/nginx/conf.d/
+
+COPY --from=build-stage /react-app/nginxPop.sh /etc/nginx/conf.d/
+
+RUN rm /etc/nginx/conf.d/default.conf
 
 # copying production build from last stage to serve through nginx
 COPY --from=build-stage /react-app/build/ /usr/share/nginx/html
 
 # exposing port 3000 on container
 EXPOSE 8080
+
+RUN chmod 777 /etc/nginx/conf.d/nginxPop.sh
+
+ENTRYPOINT ["/etc/nginx/conf.d/nginxPop.sh"]
 
 CMD ["nginx", "-g", "daemon off;"]

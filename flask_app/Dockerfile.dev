@@ -12,7 +12,6 @@ COPY ./run.py ./
 COPY ./storage.py ./
 COPY ./db_user.py ./
 COPY ./user.py ./
+COPY tests ./tests
 
-EXPOSE 5000
-
-CMD [ "python", "run.py" ]
+CMD ["pytest"]

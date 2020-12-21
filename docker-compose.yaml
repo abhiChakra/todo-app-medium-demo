@@ -1,0 +1,33 @@
+# indicating which version of Docker-compose we wish to use
+version: "3.7"
+
+# we will be creating these services
+services:
+  flask:
+    # Note that we are building from our current flask_app directory where our Dockerfile is located
+    build: 
+      context: ./flask_app
+      args:
+        - HOST=${HOST}
+        - DBNAME=${DBNAME}
+        - USER=${USER}
+        - PASS=${PASS}
+    # naming our resulting container
+    container_name: flask
+    # publishing a port so that external services requesting port 5000 on your local machine
+    # are mapped to port 5000 on our container
+    ports:
+      - "5000:5000"
+  nginx: 
+    # Since our Dockerfile for web-server is located in react-app foler, our build context is ./react-app
+    build: 
+      context: ./react_app
+      args:
+        - REACT_APP_NGINXPROXY=http://flask:5000
+        - REACT_APP_PORT=http://localhost:8080
+    container_name: nginx
+    environment:
+      - REACT_APP_NGINXPROXY=http://flask:5000
+      - REACT_APP_PORT=http://localhost:8080
+    ports:
+      - "8080:8080"

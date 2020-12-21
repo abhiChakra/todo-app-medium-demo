@@ -31,11 +31,18 @@ def connection_uri():
     config = read_config()
 
     URI = 'postgresql+psycopg2://{}:{}@/{}?host={}'.format(
-        config.get(PARSER_CONNECTION, 'user', vars=os.environ),
-        config.get(PARSER_CONNECTION, 'password', vars=os.environ),
-        config.get(PARSER_CONNECTION, 'dbname', vars=os.environ),
-        config.get(PARSER_CONNECTION, 'host', vars=os.environ)
+        os.environ['USER'],
+        os.environ['PASS'],
+        os.environ['DBNAME'],
+        os.environ['HOST']
     )
+
+    # URI = 'postgresql+psycopg2://{}:{}@/{}?host={}'.format(
+    #     config[PARSER_CONNECTION]['user'],
+    #     config[PARSER_CONNECTION]['password'],
+    #     config[PARSER_CONNECTION]['dbname'],
+    #     config[PARSER_CONNECTION]['host']
+    # )
 
     return URI
 
